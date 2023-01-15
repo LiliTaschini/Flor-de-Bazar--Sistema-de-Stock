@@ -62,12 +62,40 @@
             <input type="text" id="filtros">
         </label>
         <span>INFORMACIÓN</span>
+        <span><!-- MOSTRAR INFO --></span>
     </section>
 </div>
 
-<div></div> <!-- V-IF DE SALIDA DE PRODUCTO -->
-<div></div> <!-- V-IF DE CATEGORIA -->
-<div></div> <!-- V-IF DE PORCENTAJES -->
+<div> <!-- V-IF DE SALIDA DE PRODUCTO -->
+
+    <form action="">
+        <label for="codigo">
+            <span>Código *</span>
+            <input type="number" id="codigo" required>
+        </label>
+        <label for="cantidad">
+            <span>Cantidad *</span>
+            <datalist id="cantidad">
+                <option value="" required></option>
+            </datalist>
+        </label>
+        <label for="agregar">
+            <span>SALIDA DEL STOCK</span>
+            <input type="submit" value="agregar">
+        </label>
+    </form>
+    <section>
+        <span>INFORMACIÓN</span>
+        <span><!-- CARRITO --></span> 
+    </section>
+
+</div> 
+<div>  <!-- V-IF DE CATEGORIA -->
+
+</div>
+<div><!-- V-IF DE PORCENTAJES -->
+
+</div> 
 
     <!-- JS -->
     <script src="op.js"></script>
