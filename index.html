@@ -22,7 +22,9 @@
             <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-outline-secondary w-25">Aumento y Descuento</button>
         </nav>
     </header>
+    
     <main>
+
         <div v-if="page === 'productos'"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
             <form action="">
                 <label for="producto">
@@ -98,8 +100,16 @@
         </div> 
 
         <div v-if="page === 'categorias'">  <!-- V-IF DE CATEGORIA -->
+            <label for="nuevaCategoría">
+                <span>Ingrese una nueva categoría</span>
+                <input type="text" id="nuevaCategoría">
+            </label>
+            <section>
+                <span>INFORMACIÓN</span>
+                <span><!-- CATEGORIAS EXISTENTES --></span> 
+            </section>
         </div>
-    
+
         <div v-if="page === 'porcentaje'"><!-- V-IF DE PORCENTAJES -->
             <nav class="text-center w-100 d-flex justify-content-around">
                 <button type="button" class="px-5 py-3 btn btn-outline-danger w-50">Aumento</button> 
@@ -122,6 +132,7 @@
                 <input type="text" name="" id="aumento"><samp>%</samp>
             </div>
         </div> 
+
     </main>    
 
     
@@ -131,9 +142,9 @@
 <!-- JS -->
 <script src="op.js"></script>
 <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
