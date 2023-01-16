@@ -12,17 +12,18 @@
     <link rel="stylesheet" href="style.css">
     <title></title>
 </head>
-<body id="app" class="bg-black">
+
+<body id="app">
     <header class="w-100">
         <h1 class="bg-secondary text-center p-3">Sistema de Stock</h1>
         <nav class="text-center w-100 d-flex justify-content-around">
-            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-outline-success w-25">Agregar Productos</button>
-            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn-outline-light w-25">Salida de Productos</button>
-            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-outline-primary w-25">Agregar Categoria</button> 
-            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-outline-secondary w-25">Aumento y Descuento</button>
+            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-success w-25">Agregar Productos</button>
+            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn btn-light w-25">Salida de Productos</button>
+            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-primary w-25">Agregar Categoria</button> 
+            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-secondary w-25">Aumento y Descuento</button>
         </nav>
     </header>
-    
+
     <main>
 
         <div v-if="page === 'productos'"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
@@ -112,21 +113,21 @@
 
         <div v-if="page === 'porcentaje'"><!-- V-IF DE PORCENTAJES -->
             <nav class="text-center w-100 d-flex justify-content-around">
-                <button type="button" class="px-5 py-3 btn btn-outline-danger w-50">Aumento</button> 
-                <button type="button" class="px-5 py-3 btn btn-outline-warning w-50">Descuento</button>
+                <button @click="pagePorcentaje = 'aumento'" type="button" class="px-5 py-3 btn btn-danger w-25">Aumento</button> 
+                <button @click="pagePorcentaje = 'descuento'" type="button" class="px-5 py-3 btn btn-warning w-25">Descuento</button>
             </nav>
 
-            <div> <!-- V-IF DE AUMENTO -->
-                <label for="categoria">Seleccione una categoria</label>
-                <select name="" id="categoria"></select>
+            <div v-if="pagePorcentaje === 'aumento'"> <!-- V-IF DE AUMENTO -->
+                <label for="categoria-aumento">Seleccione una categoria</label>
+                <select name="" id="categoria-aumento"></select>
 
                 <label for="aumento">Ingrese un valor</label>
                 <input type="text" name="" id="aumento"><samp>%</samp>
             </div>
 
-            <div> <!-- V-IF DE DESCUENTO -->
-                <label for="categoria">Seleccione una categoria</label>
-                <select name="" id="categoria"></select>
+            <div v-if="pagePorcentaje === 'descuento'"> <!-- V-IF DE DESCUENTO -->
+                <label for="categoria-descuento">Seleccione una categoria</label>
+                <select name="" id="categoria-descuento"></select>
 
                 <label for="aumento">Ingrese un valor</label>
                 <input type="text" name="" id="aumento"><samp>%</samp>

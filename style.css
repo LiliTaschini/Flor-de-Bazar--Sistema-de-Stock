@@ -3,4 +3,6 @@ body{
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
+    background: rgb(33, 34, 40);
+    color: white;
 }
