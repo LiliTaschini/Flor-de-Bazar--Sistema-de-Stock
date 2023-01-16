@@ -25,7 +25,7 @@
 <div> <!-- V-IF de ENTRADA DE PRODUCTOS -->
     <form action="">
         <label for="producto">
-            <span>Producto *</span>
+            <span>Producto <span>*</span></span>
             <input type="text" id="producto" required>
         </label>
         <label for="codigo">
@@ -33,7 +33,7 @@
             <input type="number" id="codigo" required>
         </label>
         <label for="categoria">
-            <span>Categoría *</span>
+            <span>Categoría <span>*</span></span>
             <datalist id="categoria">
                 <option value="" required></option>
             </datalist>
@@ -43,13 +43,13 @@
             <input type="textarea" id="descripcion">
         </label>
         <label for="cantidad">
-            <span>Cantidad *</span>
+            <span>Cantidad <span>*</span></span>
             <datalist id="cantidad">
                 <option value="" required></option>
             </datalist>
         </label>
         <label for="precio">
-            <span>Precio *</span>
+            <span>Precio <span>*</span></span>
             <input type="number" id="precio" required>
         </label>
         <label for="agregar">
@@ -75,11 +75,11 @@
 
     <form action="">
         <label for="codigo">
-            <span>Código *</span>
+            <span>Código <span>*</span></span>
             <input type="number" id="codigo" required>
         </label>
         <label for="cantidad">
-            <span>Cantidad *</span>
+            <span>Cantidad <span>*</span></span>
             <datalist id="cantidad">
                 <option value="" required></option>
             </datalist>
@@ -96,6 +96,15 @@
 
 </div> 
 <div>  <!-- V-IF DE CATEGORIA -->
+
+    <label for="nuevaCategoría">
+        <span>Ingrese una nueva categoría</span>
+        <input type="text" id="nuevaCategoría">
+    </label>
+    <section>
+        <span>INFORMACIÓN</span>
+        <span><!-- CATEGORIAS EXISTENTES --></span> 
+    </section>
 
 </div>
 <div><!-- V-IF DE PORCENTAJES -->
