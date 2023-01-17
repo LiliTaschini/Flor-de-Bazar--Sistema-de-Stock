@@ -8,74 +8,89 @@
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
     <title></title>
 </head>
-<body id="app" >
+
+<body id="app">
     <header class="w-100">
         <h1 class="bg-secondary text-center p-3">Sistema de Stock</h1>
         <nav class="text-center w-100 d-flex justify-content-around">
-            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-outline-success w-25">Agregar Productos</button>
-            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn-outline-light w-25">Salida de Productos</button>
-            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-outline-primary w-25">Agregar Categoria</button> 
-            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-outline-secondary w-25">Aumento y Descuento</button>
+            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-outline-success w-25">Agregar
+                Productos</button>
+            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn-outline-light w-25">Salida de
+                Productos</button>
+            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-outline-primary w-25">Agregar
+                Categoria</button>
+            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-outline-secondary w-25">Aumento
+                y Descuento</button>
         </nav>
     </header>
-    
+
     <main>
 
         <div v-if="page === 'productos'"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
             <span class="text-success m-4 fs-4 d-flex justify-content-center"> Ingrese el Producto: </span>
             <form action="" class="p-4 d-flex justify-content-center">
                 <div class="d-flex flex-column align-center">
-                <label for="producto" class="d-flex flex-column pb-2">
-                    <span class="text-light">Producto *</span>
-                    <input class="focusVerde" type="text" id="producto" required>
-                </label>
-                <label for="codigo" class="d-flex flex-column pb-2">
-                    <span class="text-light">Código *</span>
-                    <input class="focusVerde" type="number" id="codigo" required>
-                </label>
-                <label for="categoria" class="d-flex flex-column pb-2">
-                    <span class="text-light">Categoría *</span>
-                    <datalist id="categoria">
-                        <option class="focusVerde" value="" required> PRUEBA</option>
-                    </datalist>
-                </label>
-            </div>
-            <div class="d-flex flex-column align-center ms-5">
-                <label for="descripcion" class="d-flex flex-column pb-2">
-                    <span class="text-light">Descripción</span>
-                    <input class="focusVerde" type="textarea" id="descripcion">
-                </label>
-                <label for="cantidad" class="d-flex flex-column pb-2">
-                    <span class="text-light">Cantidad *</span>
-                    <input class="focusVerde" type="number" id="cantidad" required>
-                </label>
-                <label for="precio" class="d-flex flex-column pb-2">
-                    <span class="text-light">Precio *</span>
-                    <input class="focusVerde" type="number" id="precio" required>
-                </label>
-            </div>
-            
-        </form>
+                    <label for="producto" class="d-flex flex-column pb-2">
+                        <span class="text-light">Producto *</span>
+                        <input class="focusVerde" type="text" id="producto" required>
+                    </label>
+                    <label for="codigo" class="d-flex flex-column pb-2">
+                        <span class="text-light">Código *</span>
+                        <input class="focusVerde" type="number" id="codigo" required>
+                    </label>
+                    <label for="categoria" class="d-flex flex-column pb-2">
+                        <span class="text-light">Categoría *</span>
+                        <datalist id="categoria">
+                            <option class="focusVerde" value="" required> PRUEBA</option>
+                        </datalist>
+                    </label>
+                </div>
+                <div class="d-flex flex-column align-center ms-5">
+                    <label for="descripcion" class="d-flex flex-column pb-2">
+                        <span class="text-light">Descripción</span>
+                        <input class="focusVerde" type="textarea" id="descripcion">
+                    </label>
+                    <label for="cantidad" class="d-flex flex-column pb-2">
+                        <span class="text-light">Cantidad *</span>
+                        <input class="focusVerde" type="number" id="cantidad" required>
+                    </label>
+                    <label for="precio" class="d-flex flex-column pb-2">
+                        <span class="text-light">Precio *</span>
+                        <input class="focusVerde" type="number" id="precio" required>
+                    </label>
+                </div>
+
+            </form>
             <label for="agregar" class="d-flex justify-content-center">
                 <input class="hoverVerde" type="submit" value="AGREGAR">
             </label>
-        
-            <section class="mt-5">
-                <label for="buscar">
-                    <span>BUSCAR</span>
-                    <input type="text" id="buscar">
-                </label>
-                <label for="filtros">
-                    <span>CATEGORÍA</span>
-                    <input type="text" id="filtros">
-                </label>
-                <span>INFORMACIÓN</span>
-                <span><!-- MOSTRAR INFO --></span>
-            </section>
+
+            <div class="d-flex justify-content-center mt-5">
+                <section class="mt-5 border rounded-2 w-50">
+                    <span class="d-flex justify-content-center mt-3 text-success m-4 fs-4">INFORMACIÓN</span>
+                    <div class="d-flex justify-content-around">
+                        <label for="buscar" class="d-flex flex-column">
+                            <span class="text-light"><i class="bi bi-search me-2"></i>BUSCAR</span>
+                            <input class="focusVerde" type="text" id="buscar">
+                        </label>
+                        <label for="filtros" class="d-flex flex-column pb-2">
+                            <span class="text-light"><i class="bi bi-bookmarks me-2"></i>CATEGORÍA</span>
+                            <datalist id="categoria">
+                                <option class="focusVerde" value="" required> PRUEBA</option>
+                            </datalist>
+                        </label>
+                    </div>
+                    <span><!-- MOSTRAR INFO --></span>
+                </section>
+            </div>
         </div>
 
         <div v-if="page === 'salida'"> <!-- V-IF DE SALIDA DE PRODUCTO -->
@@ -96,57 +111,82 @@
             </form>
             <section>
                 <span>INFORMACIÓN</span>
-                <span><!-- CARRITO --></span> 
+                <span><!-- CARRITO --></span>
             </section>
 
-        </div> 
+        </div>
 
-        <div v-if="page === 'categorias'">  <!-- V-IF DE CATEGORIA -->
-            <label for="nueva-categoría">
-                <span>Ingrese una nueva categoría</span>
-                <input type="text" id="nueva-categoría">
+        <div v-if="page === 'categorias'"> <!-- V-IF DE CATEGORIA -->
+            <span class="text-primary m-4 fs-4 d-flex justify-content-center">Ingrese una nueva categoría:</span>
+            <div class="d-flex justify-content-center">
+                <label for="nueva-categoría" class="d-flex flex-column">
+                    <span class="text-light">Categoría</span>
+                    <input type="text" id="nueva-categoría" class="focusAzul">
+                </label>
+            </div>
+            <label for="agregar" class="d-flex justify-content-center mt-4">
+                <input class="hoverAzul" type="submit" value="AGREGAR CATEGORÍA">
             </label>
-            <section>
-                <span>INFORMACIÓN</span>
-                <span><!-- CATEGORIAS EXISTENTES --></span> 
-            </section>
+            <div class="d-flex justify-content-center mt-5">
+                <section class="mt-5 border rounded-2 w-50">
+                    <span class="d-flex justify-content-center mt-3 text-primary m-4 fs-4">INFORMACIÓN</span>
+                    <span><!-- CATEGORIAS EXISTENTES --></span>
+                </section>
+            </div>
         </div>
 
         <div v-if="page === 'porcentaje'"><!-- V-IF DE PORCENTAJES -->
             <nav class="text-center w-100 d-flex justify-content-around">
-                <button type="button" class="px-5 py-3 btn btn-outline-danger w-50">Aumento</button> 
-                <button type="button" class="px-5 py-3 btn btn-outline-warning w-50">Descuento</button>
+                <button @click="pagePorcentaje = 'aumento'" type="button"
+                    class="px-5 py-3 btn btn-outline-danger w-50">Aumento</button>
+                <button @click="pagePorcentaje = 'descuento'" type="button"
+                    class="px-5 py-3 btn btn-outline-warning w-50">Descuento</button>
             </nav>
 
-            <div> <!-- V-IF DE AUMENTO -->
-                <label for="categoria">Seleccione una categoria</label>
-                <select name="" id="categoria"></select>
-
-                <label for="aumento">Ingrese un valor</label>
-                <input type="text" name="" id="aumento"><samp>%</samp>
+            <div v-if="pagePorcentaje === 'aumento'"> <!-- V-IF DE AUMENTO -->
+                <span class="text-danger m-4 fs-4 d-flex justify-content-center">Realizar Aumento:</span>
+                <div class="d-flex justify-content-evenly">
+                    <div class="d-flex flex-column">
+                        <label for="categoria" class="text-light">Seleccione una categoria</label>
+                        <select class="focusRojo" name="" id="categoria"></select>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="aumento" class="text-light">Ingrese un valor</label>
+                        <input class="focusRojo" type="text" name="" id="aumento"><samp>%</samp>
+                    </div>
+                </div>
+                <label for="agregar" class="d-flex justify-content-center mt-4">
+                    <input class="hoverRojo" type="submit" value="CALCULAR">
+                </label>
             </div>
 
-            <div> <!-- V-IF DE DESCUENTO -->
-                <label for="categoria">Seleccione una categoria</label>
-                <select name="" id="categoria"></select>
-
-                <label for="aumento">Ingrese un valor</label>
-                <input type="text" name="" id="aumento"><samp>%</samp>
+            <div v-if="pagePorcentaje === 'descuento'"> <!-- V-IF DE DESCUENTO -->
+                <span class="text-warning m-4 fs-4 d-flex justify-content-center">Realizar Descuento:</span>
+                <div class="d-flex justify-content-evenly">
+                    <div class="d-flex flex-column">
+                        <label for="categoria" class="text-light">Seleccione una categoria</label>
+                        <select class="focusAmarillo" name="" id="categoria"></select>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="aumento" class="text-light">Ingrese un valor</label>
+                        <input class="focusAmarillo" type="text" name="" id="aumento"><samp>%</samp>
+                    </div>
+                </div>
+                <label for="agregar" class="d-flex justify-content-center mt-4">
+                    <input class="hoverAmarillo" type="submit" value="CALCULAR">
+                </label>
             </div>
-        </div> 
 
-    </main>    
 
-    
 
-<!-- VUE -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<!-- JS -->
-<script src="op.js"></script>
-<!-- BOOTSTRAP -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-    crossorigin="anonymous"></script>
+    <!-- VUE -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- JS -->
+    <script src="op.js"></script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
