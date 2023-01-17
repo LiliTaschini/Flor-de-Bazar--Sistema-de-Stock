@@ -6,3 +6,22 @@ body{
     background: rgb(33, 34, 40);
     color: white;
 }
+
+.box-salida{
+    background-color: rgb(59, 59, 59);
+    padding: 20px;
+    border: solid 1px;
+    width: 60%;
+}
+
+.label-codigo{
+    width: 25%;
+}
+
+.label-cantidad{
+    width: 18%;
+}
+
+.label-button{
+    width: 30%;
+}

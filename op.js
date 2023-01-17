@@ -2,7 +2,7 @@ const app = Vue.createApp({
 
     data() {
       return {
-        page: "productos",
+        page: "salida",
         pagePorcentaje: "aumento",
       }
     }
