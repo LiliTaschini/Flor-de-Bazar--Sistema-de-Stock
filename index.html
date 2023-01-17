@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style.css">
     <title></title>
 </head>
-<body id="app" class="bg-black">
+<body id="app" >
     <header class="w-100">
         <h1 class="bg-secondary text-center p-3">Sistema de Stock</h1>
         <nav class="text-center w-100 d-flex justify-content-around">
@@ -26,41 +26,45 @@
     <main>
 
         <div v-if="page === 'productos'"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
-            <form action="">
-                <label for="producto">
-                    <span>Producto *</span>
-                    <input type="text" id="producto" required>
+            <span class="text-success m-4 fs-4 d-flex justify-content-center"> Ingrese el Producto: </span>
+            <form action="" class="p-4 d-flex justify-content-center">
+                <div class="d-flex flex-column align-center">
+                <label for="producto" class="d-flex flex-column pb-2">
+                    <span class="text-light">Producto *</span>
+                    <input class="focusVerde" type="text" id="producto" required>
                 </label>
-                <label for="codigo">
-                    <span>Código *</span>
-                    <input type="number" id="codigo" required>
+                <label for="codigo" class="d-flex flex-column pb-2">
+                    <span class="text-light">Código *</span>
+                    <input class="focusVerde" type="number" id="codigo" required>
                 </label>
-                <label for="categoria">
-                    <span>Categoría *</span>
+                <label for="categoria" class="d-flex flex-column pb-2">
+                    <span class="text-light">Categoría *</span>
                     <datalist id="categoria">
-                        <option value="" required></option>
+                        <option class="focusVerde" value="" required> PRUEBA</option>
                     </datalist>
                 </label>
-                <label for="descripcion">
-                    <span>Descripción</span>
-                    <input type="textarea" id="descripcion">
+            </div>
+            <div class="d-flex flex-column align-center ms-5">
+                <label for="descripcion" class="d-flex flex-column pb-2">
+                    <span class="text-light">Descripción</span>
+                    <input class="focusVerde" type="textarea" id="descripcion">
                 </label>
-                <label for="cantidad">
-                    <span>Cantidad *</span>
-                    <datalist id="cantidad">
-                        <option value="" required></option>
-                    </datalist>
+                <label for="cantidad" class="d-flex flex-column pb-2">
+                    <span class="text-light">Cantidad *</span>
+                    <input class="focusVerde" type="number" id="cantidad" required>
                 </label>
-                <label for="precio">
-                    <span>Precio *</span>
-                    <input type="number" id="precio" required>
+                <label for="precio" class="d-flex flex-column pb-2">
+                    <span class="text-light">Precio *</span>
+                    <input class="focusVerde" type="number" id="precio" required>
                 </label>
-                <label for="agregar">
-                    <span>AGREGAR</span>
-                    <input type="submit" value="agregar">
-                </label>
-            </form>
-            <section>
+            </div>
+            
+        </form>
+            <label for="agregar" class="d-flex justify-content-center">
+                <input class="hoverVerde" type="submit" value="AGREGAR">
+            </label>
+        
+            <section class="mt-5">
                 <label for="buscar">
                     <span>BUSCAR</span>
                     <input type="text" id="buscar">
@@ -82,10 +86,8 @@
                     <input type="number" id="codigo" required>
                 </label>
                 <label for="cantidad">
-                    <span>Cantidad *</span>
-                    <datalist id="cantidad">
-                        <option value="" required></option>
-                    </datalist>
+                    <span>Cantidad * *</span>
+                    <input type="number" id="cantidad" required>
                 </label>
                 <label for="agregar">
                     <span>SALIDA DEL STOCK</span>
@@ -100,9 +102,9 @@
         </div> 
 
         <div v-if="page === 'categorias'">  <!-- V-IF DE CATEGORIA -->
-            <label for="nuevaCategoría">
+            <label for="nueva-categoría">
                 <span>Ingrese una nueva categoría</span>
-                <input type="text" id="nuevaCategoría">
+                <input type="text" id="nueva-categoría">
             </label>
             <section>
                 <span>INFORMACIÓN</span>
