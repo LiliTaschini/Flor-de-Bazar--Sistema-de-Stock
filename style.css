@@ -7,21 +7,51 @@ body{
     color: white;
 }
 
-.box-salida{
-    background-color: rgb(59, 59, 59);
-    padding: 20px;
-    border: solid 1px;
-    width: 60%;
-}
+
 
 .label-codigo{
-    width: 25%;
+    width: 100%;
 }
 
 .label-cantidad{
-    width: 18%;
+    width: 75%;
 }
 
 .label-button{
-    width: 30%;
+    width: 15%;
+}
+
+form input[type='text']:focus, form input[type='number']:focus, form input[type='textarea']:focus{
+    outline: none;
+}
+
+form input[type='text'], form input[type='number'], form input[type='textarea'], input[type='submit']{
+    border: 1px solid rgba(101, 103, 116, 0.308);
+    border-radius: 3px;
+    background-color: rgba(101, 103, 116, 0.308);
+    color: aliceblue;
+    padding: 5px;
+}
+
+.focusVerde:focus{
+    border: 1px solid #198754 !important;
+}
+
+.hoverVerde:hover{
+    background-color: #198754;
+}
+
+.focusBlanco:focus{
+    border: 1px solid #ffffff !important;
+}
+
+.hoverBlanco:hover{
+    background-color: #ffffff;
+    color: black;
+}
+
+.box-form-salida{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
