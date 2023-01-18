@@ -2,8 +2,17 @@ const app = Vue.createApp({
 
     data() {
       return {
-        page: "salida",
-        pagePorcentaje: "aumento",
+        page: "productos",
+        pagePorcentaje: 'aumento',
+        producto: '', 
+        código: '', 
+        categoria: '',   
+        descripcion: '',  
+        cantidad: '',  
+        precio: '',  
+        descuento: '', 
+        aumento: '', 
+        nuevaCategoria: '', 
       }
     }
   }).mount('#app')
