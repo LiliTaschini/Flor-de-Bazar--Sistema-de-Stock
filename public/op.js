@@ -2,8 +2,9 @@ const app = Vue.createApp({
 
     data() {
       return {
-        page: "productos",
+        page: "inicio",
         pagePorcentaje: 'aumento',
+        pageInicio: 'iniciar',
         producto: '', 
         código: '', 
         categoria: '',   
