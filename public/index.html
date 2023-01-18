@@ -18,21 +18,46 @@
 </head>
 
 <body id="app">
+
     <header class="w-100">
         <h1 class="bg-secondary text-center p-3">Sistema de Stock</h1>
         <nav class="text-center w-100 d-flex justify-content-around">
-            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-outline-success w-25">Agregar
+            <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-success w-25">Agregar
                 Productos</button>
-            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn-outline-light w-25">Salida de
+            <button @click="page = 'salida'" type="button" class="px-5 py-3 btn btn btn-light w-25">Salida de
                 Productos</button>
-            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-outline-primary w-25">Agregar
+            <button @click="page = 'categorias'" type="button" class="px-5 py-3 btn btn-primary w-25">Agregar
                 Categoria</button>
-            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-outline-secondary w-25">Aumento
-                y Descuento</button>
+            <button @click="page = 'porcentaje'" type="button" class="px-5 py-3 btn btn-secondary w-25">Aumento y
+                Descuento</button>
         </nav>
     </header>
 
     <main>
+
+        <div v-if="page === 'inicio'">
+            <div class="d-flex flex-column justify-content-center">
+                <nav class="text-center w-100 d-flex justify-content-around ">
+                    <button type="button" class="px-5 py-3 btn boton-inicio w-25">Iniciar Sesión</button>
+                </nav>
+                <div v-if="pageInicio === 'iniciar'">
+                    <span class="text-light m-4 fs-4 d-flex justify-content-center"> Bienvenidos </span>
+                    <h6 class="text-light m-4 d-flex justify-content-center"> Por favor, ingrese las credenciales para
+                        iniciar al Sistema de Stock </h6>
+                    <div class="d-flex justify-content-evenly">
+                        <label for="usuario" class="d-flex flex-column">
+                            <span>INICIO</span>
+                            <span class="text-light"><i class="bi bi-person me-2"></i>Usuario</span>
+                            <input type="text" id="usuario" class="mb-3 focusVioleta">
+                            <span class="text-light"><i class="bi bi-lock me-2"></i>Contraseña</span>
+                            <input type="text" id="contraseña" class="mb-4 focusVioleta">
+                            <input class="hoverVioleta" type="submit" value="INGRESAR">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
 
         <div v-if="page === 'productos'"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
             <span class="text-success m-4 fs-4 d-flex justify-content-center"> Ingrese el Producto: </span>
@@ -95,24 +120,50 @@
 
         <div v-if="page === 'salida'"> <!-- V-IF DE SALIDA DE PRODUCTO -->
 
-            <form action="">
-                <label for="codigo">
-                    <span>Código *</span>
-                    <input type="number" id="codigo" required>
-                </label>
-                <label for="cantidad">
-                    <span>Cantidad * *</span>
-                    <input type="number" id="cantidad" required>
-                </label>
-                <label for="agregar">
-                    <span>SALIDA DEL STOCK</span>
-                    <input type="submit" value="agregar">
-                </label>
-            </form>
-            <section>
-                <span>INFORMACIÓN</span>
-                <span><!-- CARRITO --></span>
-            </section>
+            <h3 class="w-100 text-center py-5 pb-4">Salida de Productos</h3>
+
+            <div class="d-flex align-items-center flex-column w-100">
+
+                <form class="w-100 box-form-salida d-flex flex-column align-items-center pb-5" action="">
+                    <div class="d-flex justify-content-around">
+                        <label for="codigo" class="label-codigo d-flex flex-column p-2">
+                            <span>Código *</span>
+                            <input class="focusBlanco" type="number" id="codigo" required>
+                        </label>
+
+                        <label for="cantidad" class="label-cantidad d-flex flex-column p-2 pb-5">
+                            <span>Cantidad *</span>
+                            <input class="focusBlanco" type="number" id="cantidad" required>
+                        </label>
+
+
+                    </div>
+                    <label for="agregar" class="label-button d-flex flex-column">
+                        <input class="hoverBlanco" type="submit" value="agregar">
+                    </label>
+                </form>
+
+                <section class="d-flex align-items-center flex-column w-50">
+                    <span class="fs-4">INFORMACIÓN</span>
+                    <div class="box-salida"><!-- CARRITO -->
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam aspernatur in inventore
+                        earum odio et quas, eum dolorem repellat optio quae quo! Inventore suscipit architecto impedit
+                        beatae accusantium eius sequi.
+                        Blanditiis nihil voluptatibus totam, quis in consequatur repudiandae iure ipsa, alias laboriosam
+                        natus. Assumenda praesentium consequuntur autem natus veritatis cumque recusandae odio ea qui
+                        aperiam? Quaerat illo eligendi assumenda pariatur!
+                        Repellat, accusantium sunt. Nemo accusamus placeat vero? Esse vero sint eveniet aliquam, vitae
+                        nisi! Delectus, cumque iusto maxime magni doloribus nulla, repellendus magnam hic aperiam
+                        tenetur distinctio atque earum minus.
+                        Laudantium earum maxime dicta minima obcaecati quas temporibus. Officia blanditiis odit,
+                        mollitia accusamus tenetur corrupti esse quia impedit laborum consequuntur animi excepturi
+                        quasi, ad porro itaque atque saepe vero placeat.
+                        Neque optio maiores pariatur esse at totam dicta dolorum ex eaque ab hic in, aspernatur maxime
+                        molestias illum numquam ratione! Ducimus repellendus eos dolores eligendi magnam? Culpa nobis
+                        qui aliquid?
+                    </div>
+                </section>
+            </div>
 
         </div>
 
@@ -138,20 +189,20 @@
         <div v-if="page === 'porcentaje'"><!-- V-IF DE PORCENTAJES -->
             <nav class="text-center w-100 d-flex justify-content-around">
                 <button @click="pagePorcentaje = 'aumento'" type="button"
-                    class="px-5 py-3 btn btn-outline-danger w-50">Aumento</button>
+                    class="px-5 py-3 btn btn-danger w-25">Aumento</button>
                 <button @click="pagePorcentaje = 'descuento'" type="button"
-                    class="px-5 py-3 btn btn-outline-warning w-50">Descuento</button>
+                    class="px-5 py-3 btn btn-warning w-25">Descuento</button>
             </nav>
 
             <div v-if="pagePorcentaje === 'aumento'"> <!-- V-IF DE AUMENTO -->
                 <span class="text-danger m-4 fs-4 d-flex justify-content-center">Realizar Aumento:</span>
                 <div class="d-flex justify-content-evenly">
                     <div class="d-flex flex-column">
-                        <label for="categoria" class="text-light">Seleccione una categoria</label>
+                        <label for="categoria">Seleccione una categoria</label>
                         <select class="focusRojo" name="" id="categoria"></select>
                     </div>
                     <div class="d-flex flex-column">
-                        <label for="aumento" class="text-light">Ingrese un valor</label>
+                        <label for="aumento">Ingrese un valor</label>
                         <input class="focusRojo" type="text" name="" id="aumento"><samp>%</samp>
                     </div>
                 </div>
@@ -164,29 +215,31 @@
                 <span class="text-warning m-4 fs-4 d-flex justify-content-center">Realizar Descuento:</span>
                 <div class="d-flex justify-content-evenly">
                     <div class="d-flex flex-column">
-                        <label for="categoria" class="text-light">Seleccione una categoria</label>
+                        <label for="categoria">Seleccione una categoria</label>
                         <select class="focusAmarillo" name="" id="categoria"></select>
                     </div>
                     <div class="d-flex flex-column">
-                        <label for="aumento" class="text-light">Ingrese un valor</label>
-                        <input class="focusAmarillo" type="text" name="" id="aumento"><samp>%</samp>
+                        <label for="descuento">Ingrese un valor</label>
+                        <input class="focusAmarillo" type="text" name="" id="descuento"><samp>%</samp>
                     </div>
                 </div>
                 <label for="agregar" class="d-flex justify-content-center mt-4">
                     <input class="hoverAmarillo" type="submit" value="CALCULAR">
                 </label>
             </div>
-
-
-
-    <!-- VUE -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- JS -->
-    <script src="op.js"></script>
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+            <!-- FIREBASE -->
+            <script src="/__/firebase/9.8.3/firebase-app-compat.js"></script>
+            <script src="/__/firebase/9.8.3/firebase-database-compat.js"></script>
+            <script src="/__/firebase/9.8.3/firebase-auth-compat.js"></script>
+            <script src="/__/firebase/init.js"></script>
+            <!-- VUE -->
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <!-- JS -->
+            <script src="op.js"></script>
+            <!-- BOOTSTRAP -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>
 </body>
 
 </html>
