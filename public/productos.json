@@ -1,0 +1,98 @@
+[
+    {
+      "codigo": 1,
+      "producto": "Termo Térmico",
+      "precio": 430,
+      "categoria": "Materos",
+      "stock": 5,
+      "enCarro": 0
+    },
+    {
+        "codigo": 2,
+        "producto": "Mate de Piel bombilla de cuero",
+        "precio": 250,
+        "categoria": "Materos",
+        "stock": 7,
+        "enCarro": 0
+    },
+    {
+        "codigo": 3,
+        "producto": "Azucarera",
+        "precio": 150,
+        "categoria": "Materos",
+        "stock": 3,
+        "enCarro": 0
+    },
+    {
+        "codigo": 4,
+        "producto": "Yerbero",
+        "precio": 150,
+        "categoria": "Materos",
+        "stock": 6,
+        "enCarro": 0
+    },
+    {
+        "codigo": 5,
+        "producto": "Olla ollera",
+        "precio": 250,
+        "categoria": "Cocina",
+        "stock": 5,
+        "enCarro": 0
+    },
+    {
+        "codigo": 6,
+        "producto": "Sartén",
+        "precio": 700,
+        "categoria": "Cocina",
+        "stock": 2,
+        "enCarro": 0
+    },
+    {
+        "codigo": 7,
+        "producto": "Plato",
+        "precio": 250,
+        "categoria": "Cocina",
+        "stock": 7,
+        "enCarro": 0
+    },
+    {
+        "codigo": 8,
+        "producto": "Cubiertos",
+        "precio": 150,
+        "categoria": "Cocina",
+        "stock": 3,
+        "enCarro": 0
+    },
+    {
+        "codigo": 9,
+        "producto": "Molde de mi verga",
+        "precio": 1050,
+        "categoria": "Sexshop",
+        "stock": 5,
+        "enCarro": 0
+    },
+    {
+        "codigo": 10,
+        "producto": "Vibrador premium",
+        "precio": 200,
+        "categoria": "Sexshop",
+        "stock": 9,
+        "enCarro": 0
+    },
+    {
+        "codigo": 11,
+        "producto": "Termo sexual Térmico",
+        "precio": 350,
+        "categoria": "Sexshop",
+        "stock": 80,
+        "enCarro": 0
+    },
+    {
+        "codigo": 12,
+        "producto": "Bombachita mojada",
+        "precio": 50,
+        "categoria": "Sexshop",
+        "stock": 50,
+        "enCarro": 0
+    }
+  ]
