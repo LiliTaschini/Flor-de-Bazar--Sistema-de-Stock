@@ -21,7 +21,7 @@
 <body id="app">
 
     <header class="w-100">
-        <h1 class="bg-secondary fs-2 text-center p-3">Sistema de Stock</h1>
+        <h1 class="text-light fs-2 text-center p-3 titulo ">Sistema de Stock</h1>
         <nav v-if="inicioSesion === true" class="text-center w-100 d-flex justify-content-around">
             <button @click="page = 'productos'" type="button" class="px-5 py-3 btn btn-success w-25">Agregar
                 Productos</button>
@@ -42,19 +42,20 @@
                     <button type="button" class="px-5 py-3 btn boton-inicio w-25">Iniciar Sesión</button>
                 </nav>
                 <div v-if="pageInicio === 'iniciar'">
-                 <div class="position-absolute top-50 start-50 translate-middle">
-                    <span class="text-light m-4 fs-4 d-flex justify-content-center"> Bienvenidos </span>
-                    <h6 class="text-light m-4 d-flex justify-content-center"> Por favor, ingrese las credenciales para
-                        iniciar al Sistema de Stock </h6>
-                    <div class="d-flex justify-content-evenly">
-                        <label for="usuario" class="d-flex flex-column">                      
-                            <span class="text-light"><i class="bi bi-person me-2"></i>Usuario</span>
-                            <input type="text" id="usuario" class="mb-3 focusVioleta" v-model="usuario">
-                            <span class="text-light"><i class="bi bi-lock me-2"></i>Contraseña</span>
-                            <input type="password" id="contraseña" class="mb-4 focusVioleta" v-model="contraseña">
-                            <button class="hoverVioleta" @click="iniciarSesion()">INGRESAR</button> 
-                        </label>
-                 </div>
+                    <div class="position-absolute top-50 start-50 translate-middle">
+                        <span class="text-light m-4 fs-4 d-flex justify-content-center"> Bienvenidos </span>
+                        <h6 class="text-light m-4 d-flex justify-content-center"> Por favor, ingrese las credenciales
+                            para
+                            iniciar al Sistema de Stock </h6>
+                        <div class="d-flex justify-content-evenly">
+                            <label for="usuario" class="d-flex flex-column">
+                                <span class="text-light"><i class="bi bi-person me-2"></i>Usuario</span>
+                                <input type="text" id="usuario" class="mb-3 focusVioleta" v-model="usuario">
+                                <span class="text-light"><i class="bi bi-lock me-2"></i>Contraseña</span>
+                                <input type="password" id="contraseña" class="mb-4 focusVioleta" v-model="contraseña">
+                                <button class="hoverVioleta" @click="iniciarSesion()">INGRESAR</button>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,42 +63,44 @@
         </div>
 
         <div v-if="page === 'productos' && inicioSesion === true"> <!-- V-IF de ENTRADA DE PRODUCTOS -->
-            <span class="text-success m-4 fs-4 d-flex justify-content-center"> Ingrese el Producto: </span>
+            <span class="text-success m-4 fs-4 d-flex justify-content-center "> Ingrese el Producto: </span>
             <form action="" class="p-4 d-flex justify-content-center">
                 <div class="d-flex flex-column align-center">
                     <label for="producto" class="d-flex flex-column pb-2">
                         <span class="text-light">Producto *</span>
-                        <input class="focusVerde" type="text" id="producto" required>
+                        <input class="focusVerde" type="text" id="producto" required v-model="nombreProducto">
                     </label>
                     <label for="codigo" class="d-flex flex-column pb-2">
                         <span class="text-light">Código *</span>
-                        <input class="focusVerde" type="number" id="codigo" required>
+                        <input class="focusVerde" type="number" id="codigo" required v-model="codigo">
                     </label>
                     <label for="categoria" class="d-flex flex-column pb-2">
                         <span class="text-light">Categoría *</span>
-                        <datalist id="categoria">
-                            <option class="focusVerde" value="" required> PRUEBA</option>
-                        </datalist>
+                        <select id="categoria" v-model="categoria">
+                            <option class="focusVerde" value="PRUEBA 1" required> PRUEBA 1</option>
+                            <option class="focusVerde" value="PRUEBA 2" required> PRUEBA 2</option>
+                            <option class="focusVerde" value="PRUEBA 3" required> PRUEBA 3</option>
+                        </select>
                     </label>
                 </div>
                 <div class="d-flex flex-column align-center ms-5">
                     <label for="descripcion" class="d-flex flex-column pb-2">
                         <span class="text-light">Descripción</span>
-                        <input class="focusVerde" type="textarea" id="descripcion">
+                        <input class="focusVerde" type="textarea" id="descripcion" v-model="descripcion">
                     </label>
                     <label for="cantidad" class="d-flex flex-column pb-2">
                         <span class="text-light">Cantidad *</span>
-                        <input class="focusVerde" type="number" id="cantidad" required>
+                        <input class="focusVerde" type="number" id="cantidad" required v-model="cantidad">
                     </label>
                     <label for="precio" class="d-flex flex-column pb-2">
                         <span class="text-light">Precio *</span>
-                        <input class="focusVerde" type="number" id="precio" required>
+                        <input class="focusVerde" type="number" id="precio" required v-model="precio">
                     </label>
                 </div>
 
             </form>
             <label for="agregar" class="d-flex justify-content-center">
-                <input class="hoverVerde" type="submit" value="AGREGAR">
+                <input class="hoverVerde" type="submit" value="AGREGAR" @click.prevent="addProductos">
             </label>
 
             <div class="d-flex justify-content-center mt-5">
@@ -218,14 +221,26 @@
                     <input class="hoverAmarillo" type="submit" value="CALCULAR">
                 </label>
             </div>
+
             <!-- SWEET ALERT -->
             <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="sweetalert2.min.js"></script>
             <!-- FIREBASE -->
-            <script src="/__/firebase/9.8.3/firebase-app-compat.js"></script>
-            <script src="/__/firebase/9.8.3/firebase-database-compat.js"></script>
-            <script src="/__/firebase/9.8.3/firebase-auth-compat.js"></script>
+            <!-- update the version number as needed -->
+            <script src="/__/firebase/9.10.0/firebase-app-compat.js"></script>
+            <!-- include only the Firebase features as you need -->
+            <script src="/__/firebase/9.10.0/firebase-auth-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-database-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-firestore-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-functions-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-messaging-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-storage-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-analytics-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-remote-config-compat.js"></script>
+            <script src="/__/firebase/9.10.0/firebase-performance-compat.js"></script>
             <script src="/__/firebase/init.js"></script>
+
+            <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
             <!-- VUE -->
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
             <!-- JS -->
@@ -234,4 +249,5 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
+
 </body>
