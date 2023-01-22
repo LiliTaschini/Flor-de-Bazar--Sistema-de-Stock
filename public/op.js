@@ -27,7 +27,7 @@ const app = Vue.createApp({
   created() {
     let bd = firebase.firestore();
     this.db = bd;
-    /* this.getProductos(); */
+    this.getProductos(); 
   },
   methods: {
     iniciarSesion() {
@@ -91,6 +91,11 @@ const app = Vue.createApp({
         precio: this.precio,
         categoria: this.categoria,
       };
+      const productoRef = firebase
+        .firestore()
+        .collection("productos")
+        .doc(this.codigo.toString());
+
       this.db
         .collection("productos")
         .add(producto)
@@ -105,20 +110,21 @@ const app = Vue.createApp({
         })
         .catch((err) => console.log(err));
     },
-    /* getProductos() {
+    getProductos() {
       this.db
         .collection("productos")
         .get()
         .then((query) => {
           this.productos = [];
-          query.foreach(doc =>{
+          query.forEach((doc) => {
             let aux = {
               id: doc.id,
               data: doc.data(),
             };
             this.productos.push(aux);
           });
+          console.log(this.productos);
         });
-    }, */
+    },
   },
 }).mount("#app");

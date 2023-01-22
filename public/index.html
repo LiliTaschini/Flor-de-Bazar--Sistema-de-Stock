@@ -118,7 +118,28 @@
                             </datalist>
                         </label>
                     </div>
-                    <span><!-- MOSTRAR INFO --></span>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="text-light">Producto</th>
+                            <th scope="col" class="text-light">Código</th>
+                            <th scope="col" class="text-light">Cantidad</th>
+                            <th scope="col" class="text-light">Categoría</th>
+                            <th scope="col" class="text-light">Precio</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="producto in productos">
+                            <td class="text-light">{{producto.data.producto}}</td>
+                            <td class="text-light">{{producto.data.codigo}}</td>
+                            <td class="text-light">{{producto.data.cantidad}}</td>
+                            <td class="text-light">{{producto.data.categoria}}</td>
+                            <td class="text-light">{{producto.data.precio}}</td>
+                            <td class="text-light"><button class="bi bi-pencil-square text-light"></button> <button class="bi bi-trash3 text-light"></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
                 </section>
             </div>
         </div>

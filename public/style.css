@@ -112,3 +112,8 @@ select, .hoverVioleta {
 .cont{
     height: 40%;
 }
+button{
+    background-color: transparent;
+    color: none;
+    border: none;
+}
