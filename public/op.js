@@ -8,12 +8,18 @@ const app = Vue.createApp({
       /* ingresar producto */
       db: null,
       productos: [],
+      productosFiltrados: [],
+      categoriasFiltradas: [],
+      comprobacion: true,
       nombreProducto: "",
       codigo: "",
       categoria: "",
+      categorias: [],
       descripcion: "",
       cantidad: "",
       precio: "",
+      buscar: "",
+      cat: "",
       /* porcentajes */
       descuento: "",
       aumento: "",
@@ -21,13 +27,14 @@ const app = Vue.createApp({
       /* login */
       usuario: null,
       contraseña: "",
-      inicioSesion: false,
+      inicioSesion: true,
     };
   },
   created() {
     let bd = firebase.firestore();
     this.db = bd;
-    this.getProductos(); 
+    this.getProductos();
+    this.getCategorias();
   },
   methods: {
     iniciarSesion() {
@@ -83,30 +90,76 @@ const app = Vue.createApp({
       }
     },
     addProductos() {
-      let producto = {
-        producto: this.nombreProducto,
-        codigo: this.codigo,
-        cantidad: this.cantidad,
-        descripcion: this.descripcion,
-        precio: this.precio,
-        categoria: this.categoria,
+      this.comprobarCodigo();
+      if (this.comprobacion === true) {
+        let producto = {
+          producto: this.nombreProducto,
+          codigo: this.codigo,
+          cantidad: this.cantidad,
+          descripcion: this.descripcion,
+          precio: this.precio,
+          categoria: this.categoria,
+        };
+        this.db
+          .collection("productos")
+          .doc(`${this.codigo}`)
+          .set(producto)
+          .then((docRef) => {
+            this.getProductos();
+            this.page = "productos";
+            this.nombreProducto = "";
+            this.codigo = "";
+            this.cantidad = "";
+            this.descripcion = "";
+            this.precio = "";
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Producto agregado con éxito",
+            });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        this.comprobacion = true;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "El código ya existe",
+        });
+      }
+    },
+    addCategorias() {
+      let categoria = {
+        categoria: this.nuevaCategoria,
       };
-      const productoRef = firebase
-        .firestore()
-        .collection("productos")
-        .doc(this.codigo.toString());
-
       this.db
-        .collection("productos")
-        .add(producto)
+        .collection("categorias")
+        .doc()
+        .set(categoria)
         .then((docRef) => {
-          this.getProductos();
-          this.page = "productos";
-          this.nombreProducto = "";
-          this.codigo = "";
-          this.cantidad = "";
-          this.descripcion = "";
-          this.precio = "";
+          this.getCategorias();
+          this.page = "categorias";
+          this.nuevaCategoria = "";
         })
         .catch((err) => console.log(err));
     },
@@ -125,6 +178,60 @@ const app = Vue.createApp({
           });
           console.log(this.productos);
         });
+    },
+    getCategorias() {
+      this.db
+        .collection("categorias")
+        .get()
+        .then((query) => {
+          this.categorias = [];
+          query.forEach((doc) => {
+            let aux = {
+              data: doc.data(),
+            };
+            this.categorias.push(aux);
+          });
+          console.log(this.categorias);
+        });
+    },
+    comprobarCodigo() {
+      this.productos.forEach((doc) => {
+        if (this.codigo == doc.id) {
+          this.comprobacion = false;
+        }
+      });
+    },
+    borrarProducto(producto) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.page = "productos";
+          this.db
+            .collection("productos")
+            .doc(producto.id)
+            .delete()
+            .then((res) => {
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            });
+        }
+      });
+    },
+  },
+  computed: {
+    buscarProductos() {
+      this.productosFiltrados = this.productos.filter((res) => {
+        return (
+          res.data.producto.includes(this.buscar) &&
+          (this.cat === res.data.categoria || this.cat === "Seleccionar")
+        );
+      });
     },
   },
 }).mount("#app");

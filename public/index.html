@@ -77,9 +77,10 @@
                     <label for="categoria" class="d-flex flex-column pb-2">
                         <span class="text-light">Categoría *</span>
                         <select id="categoria" v-model="categoria">
-                            <option class="focusVerde" value="PRUEBA 1" required> PRUEBA 1</option>
-                            <option class="focusVerde" value="PRUEBA 2" required> PRUEBA 2</option>
-                            <option class="focusVerde" value="PRUEBA 3" required> PRUEBA 3</option>
+                            <option disabled>Seleccionar</option>
+                            <template v-for="categoria in categorias">
+                                <option class="focusVerde" required>{{categoria.data.categoria}}</option>
+                            </template>
                         </select>
                     </label>
                 </div>
@@ -100,46 +101,70 @@
 
             </form>
             <label for="agregar" class="d-flex justify-content-center">
-                <input class="hoverVerde" type="submit" value="AGREGAR" @click.prevent="addProductos">
+                <button @click="addProductos" class="hoverVerde">AGREGAR</button>
             </label>
 
             <div class="d-flex justify-content-center mt-5">
                 <section class="mt-5 border rounded-2 w-50">
-                    <span class="d-flex justify-content-center mt-3 text-success m-4 fs-4">INFORMACIÓN</span>
+                    <span @click="" class="d-flex justify-content-end">
+                        <div class="spinner mt-1"></div>
+                    </span>
+                    <div class="d-flex justify-content-center text-success mb-4 fs-4">INFORMACIÓN</div>
                     <div class="d-flex justify-content-around">
                         <label for="buscar" class="d-flex flex-column">
                             <span class="text-light"><i class="bi bi-search me-2"></i>BUSCAR</span>
-                            <input class="focusVerde" type="text" id="buscar">
+                            <input class="focusVerde" type="text" id="buscar" v-model="buscar">
                         </label>
                         <label for="filtros" class="d-flex flex-column pb-2">
                             <span class="text-light"><i class="bi bi-bookmarks me-2"></i>CATEGORÍA</span>
-                            <datalist id="categoria">
-                                <option class="focusVerde" value="" required> PRUEBA</option>
-                            </datalist>
+                            <select id="categoria" v-model="cat">
+                                <option disabled select>Seleccionar</option>
+                                <template v-for="categoria in categorias">
+                                    <option class="focusVerde" required>{{categoria.data.categoria}}</option>
+                                </template>
+                            </select>
                         </label>
                     </div>
-                    <table class="table">
+                    <table class="table mt-5">
+
                         <thead>
-                          <tr>
-                            <th scope="col" class="text-light">Producto</th>
-                            <th scope="col" class="text-light">Código</th>
-                            <th scope="col" class="text-light">Cantidad</th>
-                            <th scope="col" class="text-light">Categoría</th>
-                            <th scope="col" class="text-light">Precio</th>
-                            <th scope="col"></th>
-                          </tr>
+                            <tr>
+                                <th scope="col" class="text-light">Código</th>
+                                <th scope="col" class="text-light">Producto</th>
+                                <th scope="col" class="text-light">Cantidad</th>
+                                <th scope="col" class="text-light">Categoría</th>
+                                <th scope="col" class="text-light">Descripción</th>
+                                <th scope="col" class="text-light">Precio</th>
+                                <th scope="col"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="producto in productos">
-                            <td class="text-light">{{producto.data.producto}}</td>
-                            <td class="text-light">{{producto.data.codigo}}</td>
-                            <td class="text-light">{{producto.data.cantidad}}</td>
-                            <td class="text-light">{{producto.data.categoria}}</td>
-                            <td class="text-light">{{producto.data.precio}}</td>
-                            <td class="text-light"><button class="bi bi-pencil-square text-light"></button> <button class="bi bi-trash3 text-light"></button></td>
-                          </tr>
+                          
+                           <!--  <tr v-if="productosFiltrados" v-for="producto in productos">  -->
+                            <tr v-for="producto in productosFiltrados">
+                                <td class="text-light">{{producto.data.codigo}}</td>
+                                <td class="text-light">{{producto.data.producto}}</td>
+                                <td class="text-light">{{producto.data.cantidad}}</td>
+                                <td class="text-light">{{producto.data.categoria}}</td>
+                                <td class="text-light">{{producto.data.descripcion}}</td>
+                                <td class="text-light">{{producto.data.precio}}</td>
+                                <td class="text-light"><button class="bi bi-pencil-square text-light"></button> <button 
+                                    class="bi bi-trash3 text-light" @click="borrarProducto(producto)"></button></td>
+                            </tr>
+                          
+                            <!-- <tr v-if="productosFiltrados" v-for="producto in productosFiltrados">
+                                <td class="text-light">{{producto.data.codigo}}</td>
+                                <td class="text-light">{{producto.data.producto}}</td>
+                                <td class="text-light">{{producto.data.cantidad}}</td>
+                                <td class="text-light">{{producto.data.categoria}}</td>
+                                <td class="text-light">{{producto.data.descripcion}}</td>
+                                <td class="text-light">{{producto.data.precio}}</td>
+                                <td class="text-light"><button class="bi bi-pencil-square text-light"></button> <button
+                                        class="bi bi-trash3 text-light"></button></td>
+                            </tr> -->
+                       
                         </tbody>
-                      </table>
+                    </table>
                 </section>
             </div>
         </div>
@@ -165,7 +190,7 @@
 
                     </div>
                     <label for="agregar" class="label-button d-flex flex-column">
-                        <input class="hoverBlanco" type="submit" value="agregar">
+                        <button @click="" class="hoverBlanco">AGREGAR</button>
                     </label>
                 </form>
 
@@ -187,11 +212,11 @@
             <div class="d-flex justify-content-center">
                 <label for="nueva-categoría" class="d-flex flex-column">
                     <span class="text-light">Categoría</span>
-                    <input type="text" id="nueva-categoría" class="focusAzul">
+                    <input type="text" id="nueva-categoría" class="focusAzul" v-model="nuevaCategoria">
                 </label>
             </div>
             <label for="agregar" class="d-flex justify-content-center mt-4">
-                <input class="hoverAzul" type="submit" value="AGREGAR CATEGORÍA">
+                <button @click="addCategorias" class="hoverAzul">AGREGAR CATEGORÍA</button>
             </label>
             <div class="d-flex justify-content-center mt-5">
                 <section class="mt-5 border rounded-2 w-50">
@@ -222,7 +247,7 @@
                     </div>
                 </div>
                 <label for="agregar" class="d-flex justify-content-center mt-4">
-                    <input class="hoverRojo" type="submit" value="CALCULAR">
+                    <button @click="" class="hoverRojo">CALCULAR</button>
                 </label>
             </div>
 
@@ -239,7 +264,7 @@
                     </div>
                 </div>
                 <label for="agregar" class="d-flex justify-content-center mt-4">
-                    <input class="hoverAmarillo" type="submit" value="CALCULAR">
+                    <button @click="" class="hoverAmarillo">CALCULAR</button>
                 </label>
             </div>
 
