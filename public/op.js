@@ -9,17 +9,29 @@ const app = Vue.createApp({
       db: null,
       productos: [],
       productosFiltrados: [],
-      categoriasFiltradas: [],
       comprobacion: true,
-      nombreProducto: "",
+      comprobacionCampos: false,
+      comprobarCodCarr: false,
+      editarIconos: false,
+      nombreProducto: null,
       codigo: "",
-      categoria: "",
+      categoria: "Seleccionar",
       categorias: [],
+      desAumCategoria: "",
       descripcion: "",
       cantidad: "",
-      precio: "",
+      precio: null,
       buscar: "",
-      cat: "",
+      cat: "Seleccionar",
+      /* función editar */
+      editarNombre: "",
+      editarCategoria: "",
+      editarPrecio: "",
+      editarDescripcion: "",
+      editarCantidad: "",
+      editarCodigo: "",
+      // editarCategoriaGeneral: "",
+      // editarCategoriaCodigo: "",
       /* porcentajes */
       descuento: "",
       aumento: "",
@@ -27,14 +39,29 @@ const app = Vue.createApp({
       /* login */
       usuario: null,
       contraseña: "",
-      inicioSesion: true,
+      inicioSesion: false,
+      usuarioLogueado: null,
+      /* salida de producto */
+      sCodigo: "",
+      sCantidad: "",
+      carrito: [],
+      totalCarrito: null,
+      /* paginacion */
+      paginas: [],
+      totalNoOfItems: null,
+      noDePaginas: "",
+      itemsToSkip: null,
+      itemsPorPagina: 20,
+      numeroPagina: 1,
+      anterior: false,
+      siguiente: true,
     };
   },
   created() {
     let bd = firebase.firestore();
     this.db = bd;
-    this.getProductos();
     this.getCategorias();
+    this.getProductos();
   },
   methods: {
     iniciarSesion() {
@@ -91,46 +118,73 @@ const app = Vue.createApp({
     },
     addProductos() {
       this.comprobarCodigo();
-      if (this.comprobacion === true) {
-        let producto = {
-          producto: this.nombreProducto,
-          codigo: this.codigo,
-          cantidad: this.cantidad,
-          descripcion: this.descripcion,
-          precio: this.precio,
-          categoria: this.categoria,
-        };
-        this.db
-          .collection("productos")
-          .doc(`${this.codigo}`)
-          .set(producto)
-          .then((docRef) => {
-            this.getProductos();
-            this.page = "productos";
-            this.nombreProducto = "";
-            this.codigo = "";
-            this.cantidad = "";
-            this.descripcion = "";
-            this.precio = "";
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Producto agregado con éxito",
-            });
-          })
-          .catch((err) => console.log(err));
+      this.checkForm();
+      if (this.comprobacionCampos === true) {
+        if (this.comprobacion === true) {
+          let producto = {
+            producto: this.nombreProducto.toUpperCase(),
+            codigo: this.codigo.toUpperCase(),
+            cantidad: this.cantidad,
+            descripcion: this.descripcion.toUpperCase(),
+            precio: this.precio,
+            categoria: this.categoria.toUpperCase(),
+          };
+          this.db
+            .collection("productos")
+            .doc(`${this.codigo}`)
+            .set(producto)
+            .then((docRef) => {
+              this.getProductos();
+              this.comprobacionCampos = false;
+              this.comprobacion = true;
+              this.page = "productos";
+              this.nombreProducto = "";
+              this.codigo = "";
+              this.cantidad = "";
+              this.descripcion = "";
+              this.precio = "";
+              this.categoria = "Seleccionar";
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Producto agregado con éxito",
+              });
+            })
+            .catch((err) => console.log(err));
+        } else {
+          this.comprobacion = true;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "El código ya existe",
+          });
+        }
       } else {
-        this.comprobacion = true;
+        this.comprobacionCampos = false;
+      }
+    },
+    addCategorias() {
+      if (this.nuevaCategoria === "") {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -144,24 +198,55 @@ const app = Vue.createApp({
         });
         Toast.fire({
           icon: "error",
-          title: "El código ya existe",
+          title: "Compruebe que los campos esten completos",
         });
+      } else {
+        let categoria = {
+          categoria: this.nuevaCategoria.toUpperCase(),
+        };
+        this.db
+          .collection("categorias")
+          .doc(`${this.nuevaCategoria}`)
+          .set(categoria)
+          .then((docRef) => {
+            this.getCategorias();
+            this.page = "categorias";
+            this.nuevaCategoria = "";
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Categoría agregada con éxito",
+            });
+          })
+          .catch((err) => console.log(err));
       }
     },
-    addCategorias() {
-      let categoria = {
-        categoria: this.nuevaCategoria,
-      };
+    getCategorias() {
       this.db
         .collection("categorias")
-        .doc()
-        .set(categoria)
-        .then((docRef) => {
-          this.getCategorias();
-          this.page = "categorias";
-          this.nuevaCategoria = "";
-        })
-        .catch((err) => console.log(err));
+        .get()
+        .then((query) => {
+          this.categorias = [];
+          query.forEach((doc) => {
+            let aux = {
+              id: doc.id,
+              data: doc.data(),
+            };
+            this.categorias.push(aux);
+          
+          });
+          
+        });
     },
     getProductos() {
       this.db
@@ -176,22 +261,6 @@ const app = Vue.createApp({
             };
             this.productos.push(aux);
           });
-          console.log(this.productos);
-        });
-    },
-    getCategorias() {
-      this.db
-        .collection("categorias")
-        .get()
-        .then((query) => {
-          this.categorias = [];
-          query.forEach((doc) => {
-            let aux = {
-              data: doc.data(),
-            };
-            this.categorias.push(aux);
-          });
-          console.log(this.categorias);
         });
     },
     comprobarCodigo() {
@@ -203,14 +272,18 @@ const app = Vue.createApp({
     },
     borrarProducto(producto) {
       Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
+        title: "¿Seguro?",
+        text: "¡Esta acción es irreversible!",
+        icon: "error",
+        color: "#ffffff",
+        background: "#000000",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#198754",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "Cancelar",
       }).then((result) => {
+        this.getProductos();
         if (result.isConfirmed) {
           this.page = "productos";
           this.db
@@ -218,20 +291,348 @@ const app = Vue.createApp({
             .doc(producto.id)
             .delete()
             .then((res) => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire({
+                title: "¡Borrado!",
+                text: "El producto ha sido borrado.",
+                icon: "success",
+                color: "#ffffff",
+                background: "#000000",
+              });
             });
         }
       });
     },
+    editarProducto(id, nombre, precio, categoria, descripcion, cantidad) {
+      if (this.editarIconos === false) {
+        this.editarIconos = true;
+      } else {
+        this.editarIconos = false;
+        this.editarNombre = "";
+        this.editarCantidad = "";
+        this.editarDescripcion = "";
+        this.editarPrecio = "";
+        this.editarCategoria = "";
+        this.editarCodigo = "";
+      }
+      this.editarNombre = nombre;
+      this.editarPrecio = precio;
+      this.editarDescripcion = descripcion;
+      this.editarCategoria = categoria;
+      this.editarCantidad = cantidad;
+      this.editarCodigo = id;
+    },
+    enviarEdit() {
+      let ref = this.db.collection("productos").doc(`${this.editarCodigo}`);
+
+      return ref
+        .update({
+          producto: this.editarNombre,
+          cantidad: this.editarCantidad,
+          descripcion: this.editarDescripcion,
+          precio: this.editarPrecio,
+          categoria: this.editarCategoria,
+        })
+        .then((res) => {
+          this.getProductos();
+          this.editarNombre = "";
+          this.editarCantidad = "";
+          this.editarDescripcion = "";
+          this.editarPrecio = "";
+          this.editarCategoria = "";
+          this.editarCodigo = "";
+          this.editarIconos = false;
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Producto editado con éxito",
+          });
+        })
+        .catch((error) => {
+          console.log("ERROR");
+        });
+    },
+    editCategoria(id, categoria) {
+      this.editarCategoria = categoria;
+      this.editarCodigo = id;
+
+      if (this.editarIconos === false) {
+        this.editarIconos = true;
+      } else {
+        this.editarIconos = false;
+        this.editarCategoria = "";
+        this.editarCodigo = "";
+      }
+    },
+    enviarEditCategoria() {
+      let ref = this.db.collection("categorias").doc(`${this.editarCodigo}`);
+
+      return ref
+        .update({
+          categoria: this.editarCategoria,
+        })
+        .then((res) => {
+          this.getCategorias();
+          this.editarCategoria = "";
+          this.editarCodigo = "";
+          this.editarIconos = false;
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Categoria editado con éxito",
+          });
+        })
+        .catch((error) => {
+          console.log("ERROR");
+        });
+    },
+    checkForm() {
+      if (
+        this.nombreProducto &&
+        this.codigo &&
+        this.cantidad || this.cantidad >= 0 &&
+        this.precio &&
+        this.categoria != "Seleccionar"
+      ) {
+        this.comprobacionCampos = true;
+      } else {
+        this.comprobacionCampos = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Compruebe que los campos esten completos",
+        });
+      }
+    },
+    borrarCategoria(categoria) {
+      const refCategoria = this.db.collection("categorias").doc(categoria.id);
+      Swal.fire({
+        title: "¿Seguro?",
+        text: "¡Esta acción es irreversible!",
+        icon: "error",
+        color: "#ffffff",
+        background: "#000000",
+        showCancelButton: true,
+        confirmButtonColor: "#0B5ED7",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          refCategoria.delete().then((res) => {
+            this.page = "categorias";
+            this.getCategorias();
+            Swal.fire({
+              title: "¡Borrado!",
+              text: "La categoría ha sido borrado.",
+              icon: "success",
+              color: "#ffffff",
+              background: "#000000",
+            });
+          });
+        }
+      });
+    },
+    agregarCarrito() {
+      if (this.sCantidad && this.sCodigo) {
+        let refFilter = this.productos.filter(
+          (producto) => producto.id === `${this.sCodigo}`
+        );
+        let refCantidad = refFilter[0].data.cantidad;
+
+        if (refCantidad - this.sCantidad < 0) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `No hay suficientes '${refFilter[0].data.producto}'`,
+          });
+        } else {
+          this.comprobarRepetido();
+          if (this.comprobarCodCarr == false) {
+            refFilter.forEach((prop) => {
+              let aux = {
+                codigo: prop.data.codigo,
+                producto: prop.data.producto,
+                precio: prop.data.precio * this.sCantidad,
+                cantidad: this.sCantidad,
+              };
+              this.carrito.push(aux);
+              this.comprobarCodCarr = false;
+              this.sCantidad = "";
+              this.sCodigo = "";
+            });
+          }
+        }
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Compruebe que los campos esten completos",
+        });
+      }
+    },
+    comprobarRepetido() {
+      this.carrito.forEach((prod) => {
+        if (prod.codigo == this.sCodigo) {
+          this.comprobarCodCarr = true;
+        }
+      });
+    },
+    salidaProductos() {
+      if (this.carrito.length >= 1) {
+        this.carrito.forEach((prop) => {
+          let refSalida = this.db.collection("productos").doc(`${prop.codigo}`);
+          let refProducto = this.productos.filter(
+            (producto) => producto.id === `${prop.codigo}`
+          );
+          let refCantidad = refProducto[0].data.cantidad;
+          let refTotal = refCantidad - prop.cantidad;
+
+          return refSalida.update({
+            cantidad: refTotal,
+          });
+        });
+        this.carrito = [];
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Venta realizada",
+        });
+      }
+    },
+    borrarCarrito(producto) {
+      let refIndex = this.carrito.findIndex(
+        (prod) => prod.codigo === producto.codigo
+      );
+      this.carrito.splice(refIndex, 1);
+    },
+    // aumentoYdescuento(){
+
+    // }
+
+
   },
   computed: {
     buscarProductos() {
       this.productosFiltrados = this.productos.filter((res) => {
         return (
-          res.data.producto.includes(this.buscar) &&
+          res.data.producto.includes(this.buscar.toUpperCase()) &&
           (this.cat === res.data.categoria || this.cat === "Seleccionar")
         );
       });
+      this.noDePaginas = Math.ceil(this.totalNoOfItems / this.itemsPorPagina);
+    },
+    mantenerSesion() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          let uid = user.uid;
+
+          this.usuarioLogeado = user;
+
+          this.inicioSesion = true;
+          this.page = "productos";
+
+          this.usuario = "";
+          this.contraseña = "";
+        }
+      });
+    },
+    paginacion() {
+      if (this.numeroPagina === this.noDePaginas) {
+        this.siguiente = false;
+      } else {
+        this.siguiente = true;
+      }
+
+      if (this.numeroPagina === 1) {
+        this.anterior = false;
+      } else {
+        this.anterior = true;
+      }
+
+      this.totalNoOfItems = this.productosFiltrados.length;
+      this.itemsToSkip = Math.ceil(
+        (this.numeroPagina - 1) * this.itemsPorPagina
+      );
+      this.paginas = this.productosFiltrados.slice(
+        this.itemsToSkip,
+        this.itemsPorPagina + this.itemsToSkip
+      );
+    },
+    imprimirTotal() {
+      if(this.carrito.length > 0){
+          let total = 0
+          this.carrito.forEach(a=>{
+              total += a.precio
+          })
+          this.totalCarrito = total
+      }else{
+          this.totalCarrito = 0
+      }
     },
   },
 }).mount("#app");
+
+
+
