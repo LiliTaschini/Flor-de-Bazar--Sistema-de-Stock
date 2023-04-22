@@ -17,12 +17,13 @@ const app = Vue.createApp({
       codigo: "",
       categoria: "Seleccionar",
       categorias: [],
-      desAumCategoria: "",
+      refCategoria: [],
       descripcion: "",
       cantidad: "",
       precio: null,
       buscar: "",
       cat: "Seleccionar",
+      checkedBuscar: false,
       /* función editar */
       editarNombre: "",
       editarCategoria: "",
@@ -30,12 +31,13 @@ const app = Vue.createApp({
       editarDescripcion: "",
       editarCantidad: "",
       editarCodigo: "",
-      // editarCategoriaGeneral: "",
-      // editarCategoriaCodigo: "",
-      /* porcentajes */
-      descuento: "",
-      aumento: "",
+      /* Aumentos */
+      historialAumentos: [],
+      aumentarCategoria: "Seleccionar",
+      aumentoPorcentaje: null,
+      aumentarCodigo: "",
       nuevaCategoria: "",
+      modificacion: [],
       /* login */
       usuario: null,
       contraseña: "",
@@ -243,9 +245,7 @@ const app = Vue.createApp({
               data: doc.data(),
             };
             this.categorias.push(aux);
-          
           });
-          
         });
     },
     getProductos() {
@@ -373,15 +373,23 @@ const app = Vue.createApp({
         this.editarCategoria = "";
         this.editarCodigo = "";
       }
+      this.refCategoria = this.productos.filter(
+        (prod) => prod.data.categoria === this.editarCategoria
+      );
     },
     enviarEditCategoria() {
       let ref = this.db.collection("categorias").doc(`${this.editarCodigo}`);
-
+      let refCategoria = this.db.collection("productos").doc();
       return ref
         .update({
           categoria: this.editarCategoria,
         })
         .then((res) => {
+          this.refCategoria.forEach((prod) => {
+            this.db.collection("productos").doc(`${prod.data.codigo}`).update({
+              categoria: this.editarCategoria,
+            });
+          });
           this.getCategorias();
           this.editarCategoria = "";
           this.editarCodigo = "";
@@ -409,11 +417,8 @@ const app = Vue.createApp({
     },
     checkForm() {
       if (
-        this.nombreProducto &&
-        this.codigo &&
-        this.cantidad || this.cantidad >= 0 &&
-        this.precio &&
-        this.categoria != "Seleccionar"
+        (this.nombreProducto && this.codigo && this.cantidad) ||
+        (this.cantidad >= 0 && this.precio && this.categoria != "Seleccionar")
       ) {
         this.comprobacionCampos = true;
       } else {
@@ -467,7 +472,7 @@ const app = Vue.createApp({
     agregarCarrito() {
       if (this.sCantidad && this.sCodigo) {
         let refFilter = this.productos.filter(
-          (producto) => producto.id === `${this.sCodigo}`
+          (producto) => producto.id === `${this.sCodigo.toLowerCase()}`
         );
         let refCantidad = refFilter[0].data.cantidad;
 
@@ -567,19 +572,128 @@ const app = Vue.createApp({
       );
       this.carrito.splice(refIndex, 1);
     },
-    // aumentoYdescuento(){
+    mostrarInfo() {
+      this.modificacion = [];
+      if (this.aumentarCategoria && this.aumentoPorcentaje) {
+        let refFilter = this.productos.filter(
+          (producto) => producto.data.categoria === this.aumentarCategoria
+        );
+        console.log(refFilter);
 
-    // }
+        refFilter.forEach((prop) => {
+          let precioActual = prop.data.precio;
+          let aux = {
+            codigo: prop.data.codigo,
+            producto: prop.data.producto,
+            precio: prop.data.precio,
+            cantidad: prop.data.cantidad,
+            modificado: Math.round(
+              precioActual + (this.aumentoPorcentaje / 100) * precioActual
+            ),
+          };
+          this.modificacion.push(aux);
+        });
+      }
+    },
+    realizarAumento() {
+      if (this.modificacion.length >= 1) {
+        this.modificacion.forEach((prop) => {
+          let ref = this.db.collection("productos").doc(`${prop.codigo}`);
+          return ref.update({
+            precio: prop.modificado,
+          });
+        });
+        this.page = "porcentaje";
+        this.pagePorcentaje = "aumento";
+        this.modificacion = [];
+        this.guardarHistorial();
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Aumento Realizado",
+        });
+      }
+    },
+    guardarHistorial() {
+            // Obtener la fecha y hora actual
+            var fechaHora = new Date();
+            // Convertir la fecha y hora a un formato deseado
+            var dia = fechaHora.getDate();
+            var mes = fechaHora.getMonth() + 1; // Se suma 1 porque los meses en JavaScript comienzan en 0
+            var año = fechaHora.getFullYear();
+            var hora = fechaHora.getHours();
+            var minutos = fechaHora.getMinutes();
+            var segundos = fechaHora.getSeconds();
+      
+            // Formatear la fecha y hora en un string
+            var fechaHoraFormateada =
+              dia +
+              "/" +
+              mes +
+              "/" +
+              año +
+              " " +
+              hora +
+              ":" +
+              minutos +
+              ":" +
+              segundos;
 
-
+      let historial = {
+        fecha: fechaHoraFormateada,
+        categoria: this.aumentarCategoria,
+        porcentaje: this.aumentoPorcentaje,
+      };
+      this.db
+        .collection("historial")
+        .doc()
+        .set(historial)
+        .then((ref) => {
+          this.aumentarCategoria = "";
+          this.porcentajeAumento = "";
+          this.page = "porcentaje";
+        });
+    },
+    getHistorial() {
+      this.db
+        .collection("historial")
+        .get()
+        .then((query) => {
+          this.historialAumentos = [];
+          query.forEach((doc) => {
+            let aux = {
+              id: doc.id,
+              data: doc.data(),
+            };
+            this.historialAumentos.push(aux);
+          });
+        });
+    },
   },
   computed: {
     buscarProductos() {
       this.productosFiltrados = this.productos.filter((res) => {
-        return (
-          res.data.producto.includes(this.buscar.toUpperCase()) &&
-          (this.cat === res.data.categoria || this.cat === "Seleccionar")
-        );
+        if (this.checkedBuscar) {
+          return (
+            res.data.codigo.includes(this.buscar.toUpperCase()) &&
+            (this.cat === res.data.categoria || this.cat === "Seleccionar")
+          );
+        } else {
+          return (
+            res.data.producto.includes(this.buscar.toUpperCase()) &&
+            (this.cat === res.data.categoria || this.cat === "Seleccionar")
+          );
+        }
       });
       this.noDePaginas = Math.ceil(this.totalNoOfItems / this.itemsPorPagina);
     },
@@ -621,18 +735,15 @@ const app = Vue.createApp({
       );
     },
     imprimirTotal() {
-      if(this.carrito.length > 0){
-          let total = 0
-          this.carrito.forEach(a=>{
-              total += a.precio
-          })
-          this.totalCarrito = total
-      }else{
-          this.totalCarrito = 0
+      if (this.carrito.length > 0) {
+        let total = 0;
+        this.carrito.forEach((a) => {
+          total += a.precio;
+        });
+        this.totalCarrito = total;
+      } else {
+        this.totalCarrito = 0;
       }
     },
   },
 }).mount("#app");
-
-
-

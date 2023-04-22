@@ -133,7 +133,9 @@ button{
     color: none;
     border: none;
 }
-
+.no-hover:hover{
+    color: black !important;
+}
 .container-modal-edit{
     position: fixed !important;
     top: -200%;
@@ -157,7 +159,6 @@ button{
     height: 400px;
     background: rgb(0, 0, 0);
     border-radius: 5%;
-
 }
 .modal-edit-categoria{
     width: 400px;
@@ -185,4 +186,12 @@ button{
     border: 0;
     margin-right: 15px;
     margin-bottom: 10px
+  }
+
+  .categories{
+    width: 35%;
+  }
+
+  .section-products{
+    width: 85%;
   }
